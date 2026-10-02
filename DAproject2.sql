@@ -6,10 +6,14 @@ select
 gender ,sum(purchase_amount) as revenue from customer_shopping_behavior
 group by gender;
 -- Q2 which customers used the discount but still spent more than the avg. purchase amount ?
-select customer_id ,avg(purchase_amount) as avg_amount 
-from customer_shopping_behavior 
-where discount_applied = 'Yes'
-group by customer_id ;
+SELECT customer_id,
+       AVG(purchase_amount) AS avg_amount
+FROM customer_shopping_behavior
+WHERE discount_applied = 'Yes'
+GROUP BY customer_id
+HAVING AVG(purchase_amount) >
+       (SELECT AVG(purchase_amount)
+        FROM customer_shopping_behavior);
 
 -- Q3 which are the top 5 products with the highest avg. review rating?
 select item_purchased , avg(review_rating) as avg_rating from customer_shopping_behavior
